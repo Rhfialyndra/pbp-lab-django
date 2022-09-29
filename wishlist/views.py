@@ -19,6 +19,8 @@ def show_wishlist(request):
         'list_barang': data_barang_wishlist,
         'nama': 'Rahfi',
         'last_login': request.COOKIES['last_login'],
+        'user' : request.user,
+        
     }
     return render(request, "wishlist.html", context)
 
@@ -53,7 +55,7 @@ def login_user(request):
             return response
         else:
             messages.info(request, 'Username atau Password salah!')
-    context = {}
+    context = {'user' : request.user}
     return render(request, 'login.html', context)
 
 def show_wishlist_xml(request):
