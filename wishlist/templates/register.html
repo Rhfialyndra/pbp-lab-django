@@ -6,19 +6,16 @@
 
 {% block content %}  
 
-<div class = "login">
+<div class = "login flex flex-col w-full items-center py-20 gap-y-3">
     
-    <h1>Formulir Registrasi</h1>  
+    <h1 class="text-3xl font-bold text-slate-800">Formulir Registrasi</h1>  
 
-        <form method="POST" >  
+        <form method="POST" class="p-4 border border-slate-800 rounded-md flex flex-col items-center">  
             {% csrf_token %}  
             <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
+                {{ form }}  
+            </table> 
+			<input class="cursor-pointer mt-6 bg-slate-700 rounded-md p-2 hover:bg-slate-800 text-white" type="submit" name="submit" value="Daftar"/>			
         </form>
 
     {% if messages %}  
