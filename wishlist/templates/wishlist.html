@@ -2,10 +2,10 @@
 
 {% block content %}
  <script src="https://cdn.tailwindcss.com"></script>
-<nav class="w-screen h-[100px] bg-gray-100 shadow-md px-10 flex flex-row justify-between items-center">
-		<h1 class="font-bold text-2xl tracking-wider">Rahfi A</h1>
-		{% if user %}
-		<a class="cursor-pointer border border-slate-700 py-1 px-3 rounded-md hover:bg-slate-700 hover:text-white transition duration-200" href="{% url 'wishlist:logout' %}">logout</a>
+<nav class="w-screen h-[60px] md:h-[100px] bg-gray-100 shadow-md px-6 md:px-10 flex flex-row justify-between items-center">
+		<h1 class="font-bold text-xl md:text-2xl tracking-wider">{{username}}</h1>
+		{% if username %}
+		<a class="cursor-pointer border border-slate-700 py-1 px-2 md:px-3 rounded-md hover:bg-slate-700 hover:text-white text-[13px] md:text-md transition duration-200" href="{% url 'wishlist:logout' %}">logout</a>
 		{% endif %}
 </nav>
 <main class="w-screen flex flex-col items-center my-14">
@@ -19,14 +19,15 @@
 		</tr>
 		{% comment %} Tambahkan data di bawah baris ini {% endcomment %}
 		{% for barang in list_barang %}
-		<tr>
+		<tr class="text-[13px] md:text-base">
 			<td class="py-3 px-4">{{barang.nama_barang}}</td>
 			<td class="py-3 px-4">{{barang.harga_barang}}</td>
 			<td class="py-3 px-4">{{barang.deskripsi}}</td>
 		</tr>
 		{% endfor %}
 	</table>
-	<h5>Sesi terakhir login: {{ last_login }}</h5>
+	
+	<h5 class="mt-12 text-slate-700 font-bold">Sesi terakhir login: {{ last_login }}</h5>
 </main>
 
 {% endblock content %}
