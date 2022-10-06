@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login;
 from django.contrib.auth.decorators import login_required;
 from django.urls import reverse;
 import datetime;
+import json;
 
 
 @login_required(login_url="/wishlist/login/")
@@ -23,6 +24,28 @@ def show_wishlist(request):
         
     }
     return render(request, "wishlist.html", context)
+    
+@login_required(login_url="/wishlist/login/")
+def post_wishlist_json(request):
+    
+    if request.method == "POST":
+        nama = request.POST.get("nama_barang")
+        harga = request.POST.get("harga_barang")
+        deskripsi = request.POST.get("deskripsi");
+        obj = BarangWishlist(nama, harga, deskripsi);
+        obj.save();
+        
+        return HttpResponse("berhasil");
+    
+    
+@login_required(login_url="/wishlist/login/")
+def show_wishlist_ajax(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    context = {
+        'nama': 'Rahfi',
+        'username' : request.user.username,    
+    }
+    return render(request, "wishlist_ajax.html", context)
 
 def register(request):
     form = UserCreationForm()

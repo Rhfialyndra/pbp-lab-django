@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+function getData() {
+	$.get(window.location.href.replace("ajax/", "") + "json/", function(data) {
+			$(".table-data").empty();
+			console.log(data);data.forEach(function(item) {
+            $(".table-data").append(
+              `<tr>
+                <td>${item.fields.nama_barang}</td>
+                <td>${item.fields.harga_barang}</td>
+                <td>${item.fields.deskripsi}</td>
+              </tr>`
+            );
+          })
+        });
+	}
+	
+</script>
+<script>
+$(document).ready(function(){
+        getData();
+    });
+ </script>
+<script>
+	$(document).ready(function(){
+      $("#submit").click(function(e){
+		e.preventDefault();
+		var formData = $('#form-add').serialize();	
+		console.log(formData)		
+		$.ajax({
+		type: "POST",
+		url: (window.location.href + "add/"),
+		contentType: "application/json; charset=utf-8",
+		data:formData,
+		success: getData(),
+		dataType: "json"
+		});
+      });
+    });
+</script>
+<main class="w-screen flex flex-col items-center my-14">
+
+
+	<table class="w-[90vw] md:w-[80vw] text-center">
+		<tr class=" ">
+			<th class="p-4 rounded-tl-lg bg-orange-500">Nama Barang</th>
+			<th class="p-4 bg-orange-500">Harga Barang</th>
+			<th class="p-4 rounded-tr-lg bg-orange-500">Deskripsi</th>
+		</tr>
+		{% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+	<tbody class="table-data">
+	</tbody>
+	</table>
+	<form id="form-add" method="POST"  class="flex flex-col items-center  mx-6">
+	{% csrf_token %}
+	{% if messages %}  
+	<div class="w-full my-2 text-gray-700">
+        <ul>   
+            {% for message in messages %}  
+			<div class="alert alert-info shadow-lg py-2">
+			  <div>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+				<span>{{message}}</span>
+			  </div>
+			</div> 
+			{% endfor %}  
+        </ul> 
+	</div>
+    {% endif %}
+	
+	<div class="gap-y-3 bg-white rounded-lg p-4 shadow-md my-10">
+	
+		
+		<h1 class="font-bold text-xl text-gray-700 text-center">Create todo</h1>  
+
+        <div class="flex flex-col items-start gap-y-1 w-full"> 
+			<label for="nama_barang">Nama Barang</label>
+            <input class="input input-bordered input-warning w-full max-w-x" type="text" name="nama_barang"  maxlength="100" required="" id="nama_barang"/>
+        </div>
+		<div class="flex flex-col items-start gap-y-1 w-full"> 
+			<label for="harga_barang">Harga Barang</label>
+            <input class="input input-bordered input-warning w-full max-w-x" type="text" name="harga_barang"  maxlength="50" required="" id="harga_barang"/>
+        </div>
+		<div class="flex flex-col items-start gap-y-1 w-full">  
+            <label for="deskripsi">Description</label>
+			<textarea class="textarea textarea-bordered w-full" name="deskrisi" cols="40" rows="10" maxlength="1000" required="" id="deskripsi"></textarea>
+        </div>
+	
+	</div>
+	<button id="submit" class="btn w-[100px] mt-4 border border-slate-800 hover:bg-gray-200 text-gray-800">Create</button>
+	</form>
+	
+	<h5 class="mt-12 text-slate-700 font-bold">Sesi terakhir login: {{ last_login }}</h5>
+</main>
+
+{% endblock content %}
